@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>shopping list</title>
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      header {
+        text-align: center;
+      }
+
+      #new-item-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        justify-content: center;
+        align-items: center;
+      }
+
+      input {
+        text-align: center;
+      }
+
+      #add-item-btn {
+        cursor: pointer;
+        height: 2rem;
+        background-color: lightblue;
+        border-radius: 8px;
+        border: none;
+        padding: 0 10px 0 10px;
+        box-shadow: 2px 2px 8px;
+        transition: 0.75s;
+      }
+
+      #add-item-btn:hover {
+        background-color: rgba(173, 216, 230, 0.692);
+      }
+
+      .filterSection {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .total-cost {
+        width: 70px;
+        height: 70px;
+        background-color: lightgrey;
+        color: brown;
+        font-weight: 800;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 2rem;
+        text-align: center;
+        align-content: center;
+        border-radius: 8px;
+        border: none;
+      }
+
+      #delete-list {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 25px;
+        display: block;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        background-color: lightpink;
+        width: 100px;
+        height: 25px;
+      }
+
+      .item-property-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #item-name-box {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid;
+        border-radius: 8px;
+        background-color: rgb(57, 50, 50);
+        color: white;
+        width: 350px;
+        height: 50px;
+        padding: 0 10px 0 10px;
+
+        transition: 0.75s;
+      }
+
+      #checkBox {
+        margin-left: auto;
+      }
+
+      #delete-single-item {
+        margin-left: 70px;
+        cursor: pointer;
+        color: white;
+        background-color: red;
+        border: none;
+        border-radius: 6px;
+      }
+      .quantity,
+      .unit-price {
+        width: 4rem;
+        height: 2rem;
+        border-radius: 8px;
+        border: none;
+        margin-left: 1rem;
+        background-color: lightgrey;
+      }
+
+      #items-to-buy {
+        margin-top: 3rem;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .itemCard {
+        display: flex;
+        justify-content: space-around;
+        /* flex-direction: column; */
+
+        -webkit-animation: cardAppear 0.5s both;
+
+        animation: cardAppear 0.5s both;
+      }
+
+      @-webkit-keyframes cardAppear {
+        from {
+          scale: 0;
+        }
+        to {
+          scale: 1;
+        }
+      }
+
+      @keyframes cardAppear {
+        from {
+          scale: 0;
+        }
+        to {
+          scale: 1;
+        }
+      }
+
+      #filterInput {
+        background-color: rgb(241, 166, 139);
+        color: black;
+        font-weight: 900;
+
+        border: none;
+        border-radius: 5px;
+      }
+
+      .calc-btn {
+        cursor: pointer;
+        margin: 1rem auto;
+        display: block;
+        background-color: peachpuff;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px grey;
+        transition: 0.4s;
+      }
+
+      .calc-btn:hover {
+        background-color: rgba(53, 48, 48, 0.603);
+        color: white;
+        box-shadow: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Shopping List</h1>
+    </header>
+    <hr />
+    <main>
+      <section id="new-item-container">
+        <label for="new-item">Add new item here</label>
+        <input type="text" name="new-item" id="new-item" />
+        <button id="add-item-btn">Add Item To The List</button>
+        <br />
+      </section>
+      <section class="filterSection">
+        <label for="filterInput">Filter Items by Name: </label>
+        <br />
+        <input type="text" name="filterInput" id="filterInput" />
+      </section>
+      <br />
+      <section class="total-cost-container">
+        <div class="total-cost"></div>
+      </section>
+      <button class="calc-btn">Calculate</button>
+      <hr />
+      <section id="items-to-buy">
+        <!--Comment it below this line-->
+        <!-- <article class="itemCard">
+          <div id="item-name-box">
+            <div class="itemName">dishwasher soap</div>
+            <input type="checkbox" id="checkBox" />
+            <button type="submit" id="delete-single-item">X</button>
+          </div>
+        </article>
+        <article class="itemCard">
+          <div id="item-name-box">
+            <div class="itemName">apple</div>
+            <input type="checkbox" id="checkBox" />
+            <button type="submit" id="delete-single-item">X</button>
+          </div>
+        </article>
+        <article class="itemCard">
+          <div id="item-name-box">
+            <div class="itemName">oranges</div>
+            <input type="checkbox" id="checkBox" />
+            <button type="submit" id="delete-single-item">X</button>
+          </div>
+        </article>
+        <article class="itemCard">
+          <div id="item-name-box">
+            <div class="itemName">orange Juice</div>
+            <input type="checkbox" id="checkBox" />
+            <button type="submit" id="delete-single-item">X</button>
+          </div>
+        </article> -->
+        <!--Comment it above-->
+      </section>
+      <br />
+      <button id="delete-list">Delete List</button>
+    </main>
+    <script>
+      // Bringing in elements
+
+      // New item name
+      const newItem = document.getElementById(`new-item`);
+
+      // Add items button
+      const addItemBtn = document.getElementById(`add-item-btn`);
+
+      // Total price
+      // const totalPrice = document.getElementById(`total-price`);
+
+      // Delete list button
+      const deleteList = document.getElementById(`delete-list`);
+
+      // Add eventListener to `addItemBtn`
+
+      window.addEventListener(`load`, () => {
+        newItem.focus();
+      });
+      // ------------------------- Add New Item
+      addItemBtn.addEventListener(`click`, onAddItemSubmitClick);
+      newItem.addEventListener(`keypress`, onAddItemSubmitEnterKey);
+
+      function onAddItemSubmitEnterKey(e) {
+        if (e.key === `Enter`) {
+          e.preventDefault();
+          if (newItem.value === ``) {
+            alert(`Add Item Name`);
+            newItem.focus();
+            return;
+          }
+
+          // Contains the name of the item and the `delete single item` btn
+
+          // Item name box
+          const itemNameBox = document.createElement(`div`);
+          itemNameBox.id = `item-name-box`;
+
+          // Item name
+          const itemName = document.createElement(`div`);
+          itemName.className = `itemName`;
+
+          // Quantity
+          const qty = document.createElement(`input`);
+          qty.className = `quantity`;
+          qty.type = "number";
+          qty.step = "0.01"; // Allows decimal input
+          qty.min = "0"; // Optional: no negative numbers
+          qty.value = "1"; // Default value, editable
+
+          // Unit price
+          const unitPrice = document.createElement(`input`);
+          unitPrice.className = `unit-price`;
+          unitPrice.step = "0.01"; // Allows decimal input
+          unitPrice.min = "0"; // Optional: no negative numbers
+          unitPrice.type = "number";
+          unitPrice.value = "1"; // Default value, editable
+
+          // Checkbox
+          const checkBox = document.createElement(`input`);
+          checkBox.type = `checkbox`;
+          checkBox.id = `checkBox`;
+
+          // Delete single item btn
+          const deleteSingleItem = document.createElement(`button`);
+          deleteSingleItem.id = `delete-single-item`;
+          deleteSingleItem.innerText = `X`;
+          deleteSingleItem.addEventListener(`click`, () => {
+            deleteSingleItem.parentElement.parentElement.remove();
+          });
+
+          // Append the `ingredients`
+
+          itemName.textContent = newItem.value.toLowerCase();
+          itemNameBox.appendChild(itemName);
+          itemNameBox.appendChild(checkBox);
+          itemNameBox.appendChild(deleteSingleItem);
+          itemNameBox.appendChild(qty);
+          itemNameBox.appendChild(unitPrice);
+
+          const itemCard = document.createElement(`article`);
+          itemCard.className = `itemCard`;
+
+          const itemsToBuy = document.getElementById(`items-to-buy`);
+
+          itemCard.appendChild(itemNameBox);
+          itemsToBuy.appendChild(itemCard);
+
+          checkBox.addEventListener("change", () => {
+            if (checkBox.checked) {
+              itemName.parentNode.style.backgroundColor = `rgb(137, 188, 205)`;
+              itemName.style.color = `black`;
+              itemName.style.textDecoration = `line-through`;
+              // console.log("Checkbox is checked!");
+            } else {
+              itemName.parentNode.style.backgroundColor = `rgb(57, 50, 50)`;
+              itemName.style.color = `white`;
+              itemName.style.textDecoration = `none`;
+              // console.log("Checkbox is unchecked.");
+            }
+          });
+
+          // Clear input field
+          newItem.value = ``;
+          newItem.focus();
+
+          // Save in localStorage
+          saveItemsToStorage();
+
+          // Calculate total cost
+          calculateTotal();
+        }
+      }
+
+      function onAddItemSubmitClick(e) {
+        e.preventDefault();
+        if (newItem.value === ``) {
+          alert(`Add Item Name`);
+          newItem.focus();
+          return;
+        }
+
+        // Contains the name of the item and the `delete single item` btn
+
+        // Item name box
+        const itemNameBox = document.createElement(`div`);
+        itemNameBox.id = `item-name-box`;
+
+        // Item name
+        const itemName = document.createElement(`div`);
+        itemName.className = `itemName`;
+
+        // Quantity
+        const qty = document.createElement(`input`);
+        qty.className = `quantity`;
+        qty.type = "number";
+        qty.step = "0.01"; // Allows decimal input
+        qty.min = "0"; // Optional: no negative numbers
+        qty.value = "1"; // Default value, editable
+
+        // Unit price
+        const unitPrice = document.createElement(`input`);
+        unitPrice.className = `unit-price`;
+        unitPrice.step = "0.01"; // Allows decimal input
+        unitPrice.min = "0"; // Optional: no negative numbers
+        unitPrice.type = "number";
+        unitPrice.value = "1"; // Default value, editable
+
+        // Checkbox
+        const checkBox = document.createElement(`input`);
+        checkBox.type = `checkbox`;
+        checkBox.id = `checkBox`;
+
+        // Delete single item btn
+        const deleteSingleItem = document.createElement(`button`);
+        deleteSingleItem.id = `delete-single-item`;
+        deleteSingleItem.innerText = `X`;
+        deleteSingleItem.addEventListener(`click`, () => {
+          deleteSingleItem.parentElement.parentElement.remove();
+        });
+
+        // Append the `ingredients`
+
+        itemName.textContent = newItem.value.toLowerCase();
+        itemNameBox.appendChild(itemName);
+        itemNameBox.appendChild(checkBox);
+        itemNameBox.appendChild(deleteSingleItem);
+        itemNameBox.appendChild(qty);
+        itemNameBox.appendChild(unitPrice);
+
+        const itemCard = document.createElement(`article`);
+        itemCard.className = `itemCard`;
+
+        const itemsToBuy = document.getElementById(`items-to-buy`);
+
+        itemCard.appendChild(itemNameBox);
+        itemsToBuy.appendChild(itemCard);
+
+        checkBox.addEventListener("change", () => {
+          if (checkBox.checked) {
+            itemName.parentNode.style.backgroundColor = `rgb(137, 188, 205)`;
+            itemName.style.color = `black`;
+            itemName.style.textDecoration = `line-through`;
+            // console.log("Checkbox is checked!");
+          } else {
+            itemName.parentNode.style.backgroundColor = `rgb(57, 50, 50)`;
+            itemName.style.color = `white`;
+            itemName.style.textDecoration = `none`;
+            // console.log("Checkbox is unchecked.");
+          }
+        });
+
+        // Clear input field
+        newItem.value = ``;
+        newItem.focus();
+
+        // Save in localStorage
+        saveItemsToStorage();
+
+        // Calculate total cost
+        calculateTotal();
+      }
+
+      deleteList.addEventListener(`click`, deleteItemCard);
+
+      function deleteItemCard(e) {
+        e.preventDefault();
+
+        const itemCards = document.querySelectorAll(`.itemCard`);
+        itemCards.forEach((card) => card.remove());
+
+        localStorage.removeItem(`shoppingList`);
+        filterInput.value = ``;
+
+        calculateTotal(); // <-- This updates the total
+      }
+
+      // Filtering the list
+      const itemsToBuy = document.querySelector(`#items-to-buy`);
+      const filterInput = document.querySelector(`#filterInput`);
+      filterInput.addEventListener(`input`, filterItems);
+
+      function filterItems(e) {
+        const items = document.querySelectorAll(`.itemCard`);
+        const text = e.target.value.toLowerCase();
+
+        items.forEach((item) => {
+          const itemName = item.textContent.toLowerCase();
+
+          if (itemName.indexOf(text) != -1) {
+            item.style.display = `flex`;
+          } else {
+            item.style.display = `none`;
+          }
+        });
+      }
+
+      function saveItemsToStorage() {
+        const items = [];
+        document.querySelectorAll(`.itemCard`).forEach((card) => {
+          const itemName = card.querySelector(`.itemName`).textContent;
+          const isChecked = card.querySelector(
+            `input[type="checkbox"]`
+          ).checked;
+          const qty = parseFloat(card.querySelector(`.quantity`).value);
+          const unitPrice = parseFloat(card.querySelector(`.unit-price`).value);
+
+          items.push({
+            name: itemName,
+            checked: isChecked,
+            quantity: qty,
+            unitPrice: unitPrice,
+          });
+        });
+
+        localStorage.setItem(`shoppingList`, JSON.stringify(items));
+      }
+
+      function loadItemsFromStorage() {
+        const storedItems =
+          JSON.parse(localStorage.getItem(`shoppingList`)) || [];
+        storedItems.forEach((item) => {
+          addItemToUI(item.name, item.checked, item.quantity, item.unitPrice);
+        });
+      }
+
+      // window.addEventListener(`load`, loadItemsFromStorage);
+      window.addEventListener(`load`, () => {
+        newItem.focus();
+        loadItemsFromStorage();
+        calculateTotal();
+      });
+
+      function addItemToUI(
+        itemName,
+        isChecked,
+        quantity = 1,
+        unitPriceValue = 1
+      ) {
+        const itemNameBox = document.createElement(`div`);
+        itemNameBox.id = `item-name-box`;
+
+        const itemNameElem = document.createElement(`div`);
+        itemNameElem.className = `itemName`;
+        itemNameElem.textContent = itemName.toLowerCase();
+
+        const qty = document.createElement(`input`);
+        qty.className = `quantity`;
+        qty.type = "number";
+        qty.step = "0.01";
+        qty.min = "0";
+        qty.value = quantity;
+
+        const unitPrice = document.createElement(`input`);
+        unitPrice.className = `unit-price`;
+        unitPrice.step = "0.01";
+        unitPrice.min = "0";
+        unitPrice.type = "number";
+        unitPrice.value = unitPriceValue;
+
+        const checkBox = document.createElement(`input`);
+        checkBox.type = `checkbox`;
+        checkBox.id = `checkBox`;
+        checkBox.checked = isChecked;
+
+        const deleteSingleItem = document.createElement(`button`);
+        deleteSingleItem.id = `delete-single-item`;
+        deleteSingleItem.innerText = `X`;
+        deleteSingleItem.addEventListener(`click`, () => {
+          deleteSingleItem.parentElement.parentElement.remove();
+          saveItemsToStorage();
+        });
+
+        itemNameBox.appendChild(itemNameElem);
+        itemNameBox.appendChild(checkBox);
+        itemNameBox.appendChild(deleteSingleItem);
+        itemNameBox.appendChild(qty);
+        itemNameBox.appendChild(unitPrice);
+
+        //
+        qty.addEventListener("input", () => {
+          saveItemsToStorage();
+          calculateTotal();
+        });
+        unitPrice.addEventListener("input", () => {
+          saveItemsToStorage();
+          calculateTotal();
+        });
+
+        //
+
+        const itemCard = document.createElement(`article`);
+        itemCard.className = `itemCard`;
+        itemCard.appendChild(itemNameBox);
+
+        document.getElementById(`items-to-buy`).appendChild(itemCard);
+
+        // Optional: re-attach any other event listeners
+        checkBox.addEventListener("change", saveItemsToStorage);
+        qty.addEventListener("input", saveItemsToStorage);
+        unitPrice.addEventListener("input", saveItemsToStorage);
+      }
+
+      function deleteItemCard(e) {
+        e.preventDefault();
+
+        const itemCards = document.querySelectorAll(`.itemCard`);
+        itemCards.forEach((card) => card.remove());
+
+        localStorage.removeItem(`shoppingList`);
+        filterInput.value = ``;
+      }
+
+      function calculateTotal() {
+        let total = 0;
+
+        document.querySelectorAll(`.itemCard`).forEach((card) => {
+          const qtyInput = card.querySelector(`.quantity`);
+          const priceInput = card.querySelector(`.unit-price`);
+
+          const qty = parseFloat(qtyInput?.value) || 0;
+          const price = parseFloat(priceInput?.value) || 0;
+
+          total += qty * price;
+        });
+
+        document.querySelector(`.total-cost`).textContent = total.toFixed(2);
+      }
+
+      document
+        .querySelector(".calc-btn")
+        .addEventListener(`click`, calculateTotal);
+    </script>
+  </body>
+</html>
